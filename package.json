@@ -1,0 +1,42 @@
+{
+  "name": "AppTracker",
+  "description": "WebServer for in-app tracking",
+  "homepage": "https://github.com/HotelQuickly/AppTracker/",
+  "author": "Michal Juhas, HotelQuickly",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/HotelQuickly/AppTracker/"
+  },
+  "main": "index",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "dependencies": {
+    "hapi": "2.x.x",
+    "mysql": "2.0.0-alpha8",
+    "request": "2.33.x",
+    "validator": "3.1.x"
+  },
+  "devDependencies": {
+    "hapi": "2.x.x",
+    "mysql": "2.0.0-alpha8",
+    "request": "2.33.x",
+    "validator": "3.1.x"
+  },
+  "bin": {
+    "hapi": "./bin/hapi"
+  },
+  "scripts": {
+    "test": "make test-cov"
+  },
+  "licenses": [
+    {
+      "type": "BSD",
+      "url": "http://github.com/spumko/hapi/raw/master/LICENSE"
+    }
+  ],
+  "bugs": {
+    "url": "https://github.com/HotelQuickly/AppTracker/issues"
+  }
+}
