@@ -54,6 +54,11 @@ server.route({
     handler: callback.handlerSaveCallback
 });
 server.route({
+    method: 'POST',
+    path: '/', /* we need this route for legacy reasons, it's the same as POST /callback */
+    handler: callback.handlerSaveCallback
+});
+server.route({
     method: 'GET',
     path: '/healthy-check',
     handler: healthyCheck.handlerHealthyCheck
