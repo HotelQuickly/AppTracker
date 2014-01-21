@@ -9,6 +9,7 @@ CREATE TABLE `app_callback` (
   `app_secret_key` varchar(50) DEFAULT NULL,
   `screen_name` varchar(100) DEFAULT NULL,
   `event_name` varchar(100) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
   `timestamp` bigint DEFAULT NULL,
   `synchronized_flag` tinyint DEFAULT 0,
   `ins_dt` datetime NOT NULL,

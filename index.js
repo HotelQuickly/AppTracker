@@ -9,7 +9,9 @@ var validatorModule = require('validator');
 // Load project libraries and configuration
 var config = require('./config.js');
 var callback = require('./lib/callback.js');
+var exportData = require('./lib/export-data.js');
 var mysqlTools = require('./lib/mysql-tools.js');
+var synchronize = require('./lib/synchronize.js');
 var healthyCheck = require('./lib/healthy-check.js');
 var errorCollector = require('./lib/error-collector.js');
 
@@ -20,6 +22,11 @@ var server = hapiModule.createServer('0.0.0.0', config.server.port, {debug: fals
 errorCollector.setRequestModule(requestModule);
 errorCollector.setHostname(server.info.uri);
 errorCollector.setTargetUrl(config.errorTracker.url);
+
+// Set up export data
+exportData.setRequestModule(requestModule);
+exportData.setHostname(server.info.uri);
+exportData.setTargetUrl(config.exportData.url);
 
 // Connect to MySQL
 mysqlTools.setErrorCollector(errorCollector);
@@ -34,6 +41,11 @@ callback.setValidator(validatorModule);
 healthyCheck.setMysqlConnection(mysqlConnection);
 healthyCheck.setTableName(config.healthyCheck.tableName);
 
+// Set handler params
+synchronize.setErrorCollector(errorCollector);
+synchronize.setMysqlConnection(mysqlConnection);
+synchronize.setExportData(exportData);
+
 // Add the routes and their handlers
 server.route({
     method: 'POST',
@@ -44,6 +56,11 @@ server.route({
     method: 'GET',
     path: '/healthy-check',
     handler: healthyCheck.handlerHealthyCheck
+});
+server.route({
+	method: 'GET',
+	path: '/sync',
+	handler: synchronize.handlerSync
 });
 
 // Start server

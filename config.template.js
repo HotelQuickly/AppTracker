@@ -16,3 +16,7 @@ exports.healthyCheck = {
 exports.server = {
 	port: 8080
 }
+
+exports.exportData = {
+	url: "http://backend.hotelquickly.com/import/data"
+}
