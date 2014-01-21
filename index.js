@@ -45,6 +45,7 @@ healthyCheck.setTableName(config.healthyCheck.tableName);
 synchronize.setErrorCollector(errorCollector);
 synchronize.setMysqlConnection(mysqlConnection);
 synchronize.setExportData(exportData);
+synchronize.setLimit(config.synchronize.maxItems);
 
 // Add the routes and their handlers
 server.route({

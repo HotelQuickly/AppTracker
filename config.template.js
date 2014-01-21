@@ -20,3 +20,7 @@ exports.server = {
 exports.exportData = {
 	url: "http://backend.hotelquickly.com/import/data"
 }
+
+exports.synchronize = {
+	maxItems: 100
+}
