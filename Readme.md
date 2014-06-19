@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/repos/52efc96d6956806bff005595/badges/64ddbf53a4cb2f8a70f2/gpa.png)](https://codeclimate.com/repos/52efc96d6956806bff005595/feed)
+
 # AppTracker callback server
 
 Node.js server using [Hapi framework](http://www.hapijs.com) to get callbacks from our mobile apps (iOS, Android & BlackBerry).

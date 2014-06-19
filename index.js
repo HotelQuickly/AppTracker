@@ -15,6 +15,8 @@ var synchronize = require('./lib/synchronize.js');
 var healthyCheck = require('./lib/healthy-check.js');
 var errorCollector = require('./lib/error-collector.js');
 
+var mysqlConnection;
+
 // Create a server with a host and port
 var server = hapiModule.createServer('0.0.0.0', config.server.port, {debug: false});
 
