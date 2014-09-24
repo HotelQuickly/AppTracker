@@ -16,7 +16,8 @@
     "hapi": "2.x.x",
     "mysql": "2.0.0-alpha8",
     "request": "2.33.x",
-    "validator": "3.1.x"
+    "validator": "3.1.x",
+    "node-statsd-client": "~1.0.x"
   },
   "devDependencies": {
     "hapi": "2.x.x",
