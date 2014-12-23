@@ -18,7 +18,9 @@ var errorCollector = require('./lib/error-collector.js');
 var mysqlConnection;
 
 // Create a server with a host and port
-var server = hapiModule.createServer('0.0.0.0', config.server.port, {debug: false});
+// var server = hapiModule.createServer('0.0.0.0', config.server.port, {debug: false});
+var server = new hapiModule.Server();
+server.connection({ host: '0.0.0.0', port: 4023 /* config.server.port */ });
 
 // Set up error tracker
 errorCollector.setRequestModule(requestModule);
