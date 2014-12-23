@@ -1,0 +1,12 @@
+hotelquickly/AppTracker:
+ PreInstall:
+   - 'rm -rf /var/www/distelli/AppTracker'
+ PkgInclude:
+   - "*"
+ PkgExclude:
+   - 'node_modules/'
+ PostInstall:
+   - 'npm install'
+   - 'ln -sf $DISTELLI_INSTALLHOME /var/www/distelli/AppTracker'
+ Exec:
+   - 'exec /usr/bin/node index.js'
