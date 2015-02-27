@@ -5,6 +5,10 @@ var hapiModule = require('hapi');
 var mysqlModule = require('mysql');
 var requestModule = require('request');
 var validatorModule = require('validator');
+var seneca = require('seneca')();
+// var senecaMySQL = require('seneca-mysql-store');
+var senecaDynamoDB = require('seneca-dynamo-store');
+
 
 // Load project libraries and configuration
 var config = require('./config.js');
@@ -16,6 +20,9 @@ var healthyCheck = require('./lib/healthy-check.js');
 var errorCollector = require('./lib/error-collector.js');
 
 var mysqlConnection;
+
+seneca.use(senecaDynamoDB, config.database.dynamodb);
+
 
 // Create a server with a host and port
 // var server = hapiModule.createServer('0.0.0.0', config.server.port, {debug: false});
@@ -38,7 +45,7 @@ mysqlConnection = mysqlTools.connectToMysql(mysqlModule, config);
 
 // Set handler params
 callback.setErrorCollector(errorCollector);
-callback.setMysqlConnection(mysqlConnection);
+callback.setSenecaReference(seneca);
 callback.setValidator(validatorModule);
 
 // Configure healthy check
@@ -74,6 +81,12 @@ server.route({
 });
 
 // Start server
-server.start(function () {
-    console.log('Server started at: ' + server.info.uri);
+seneca.ready( function(){
+    t = seneca.make('logOtaParserRequest');
+    t.load$('0128aeac-71b2-43bf-b187-164e94996cc1',function(err,obj){
+        console.log(obj);
+    });
+    server.start(function () {
+        console.log('Server started at: ' + server.info.uri);
+    });
 });
