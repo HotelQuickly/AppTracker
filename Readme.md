@@ -26,6 +26,8 @@ The callbacks will be available with POST request on URL ```/callback```
 Launch the application (```node .```) and run cURL with POST data:
 ```
 curl -X POST http://localhost:8000/callback -d "email=test@example.com&timestamp=1390078739&event=open&smtp-id=32131231&category=all"
+
+curl -X POST http://localhost:4023/callback -d "email=test@example.com&timestamp=1390078739&event_list=%5B%7B%22screen_name%22%3A%22Get%20settings%22%2C%22event_name%22%3A%22show.screen.splash.screen%22%2C%22id%22%3A36%2C%22hotel_id%22%3A-1%2C%22city_id%22%3A-1%2C%22timestamp%22%3A1425010784%7D%5D&smtp-id=32131231&category=all"
 ```
 
 ## Healthy check
