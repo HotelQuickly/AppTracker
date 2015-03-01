@@ -19,6 +19,7 @@
     "node-statsd-client": "~1.0.x",
     "request": "2.33.x",
     "seneca": "^0.6.1",
+    "seneca-dynamo-store": "git://github.com/HotelQuickly/seneca-dynamo-store.git",
     "seneca-mysql-store": "^0.4.0",
     "validator": "3.1.x"
   },
