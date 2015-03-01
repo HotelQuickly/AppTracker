@@ -48,8 +48,7 @@ callback.setSenecaReference(seneca);
 callback.setValidator(validatorModule);
 
 // Configure healthy check
-healthyCheck.setMysqlConnection(mysqlConnection);
-healthyCheck.setTableName(config.healthyCheck.tableName);
+healthyCheck.setSenecaReference(seneca);
 
 // Set handler params
 synchronize.setErrorCollector(errorCollector);
