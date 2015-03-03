@@ -2,7 +2,6 @@
 
 // Load plugins
 var hapiModule = require('hapi');
-var mysqlModule = require('mysql');
 var requestModule = require('request');
 var validatorModule = require('validator');
 var seneca = require('seneca')();
@@ -14,12 +13,9 @@ var senecaDynamoDB = require('seneca-dynamo-store');
 var config = require('./config.js');
 var Callback = require('./lib/callback.js');
 var exportData = require('./lib/export-data.js');
-var mysqlTools = require('./lib/mysql-tools.js');
 var Synchronize = require('./lib/synchronize.js');
 var HealthyCheck = require('./lib/healthy-check.js');
 var errorCollector = require('./lib/error-collector.js');
-
-var mysqlConnection;
 
 seneca.use(senecaDynamoDB, config.database.dynamodb);
 
@@ -32,18 +28,6 @@ errorCollector.setRequestModule(requestModule);
 errorCollector.setHostname(server.info.uri);
 errorCollector.setTargetUrl(config.errorTracker.url);
 
-
-
-// Set up export data
-// files that need it , now require it
-// exportData.setRequestModule(requestModule);
-// exportData.setHostname(server.info.uri);
-// exportData.setTargetUrl(config.exportData.url);
-
-// Connect to MySQL
-mysqlTools.setErrorCollector(errorCollector);
-mysqlConnection = mysqlTools.connectToMysql(mysqlModule, config);
-
 // Set handler params
 handlerParams = {
     errorCollector: errorCollector,
@@ -51,9 +35,8 @@ handlerParams = {
     validatorModule: validatorModule
 };
 callback = new Callback(handlerParams);
-// callback.init(handlerParams);
 
-// Configure healthy check
+// Set healthy check params
 healthyParams = {
     seneca: seneca
 };
