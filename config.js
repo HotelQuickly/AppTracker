@@ -1,3 +1,5 @@
+// TODO: completely deprecate this file
+
 module.exports = {
 	database: {
 		dynamodb: {
@@ -6,19 +8,10 @@ module.exports = {
 			secret: process.env.AWS_SECRET
 		},
 		tableName: 'app_tracker'
-	},
-	errorTracker: {
-		url: 'http://api.hotelquickly.com'
-	},
-	healthyCheck: {
-		tableName: 'app_callback'
-	},
-	exportData: {
-		url: 'http://backend.hotelquickly.com/import/data'
-	},
-	synchronize: {
-		maxItems: 100
 	}
+	// errorTracker: {
+	// 	url: process.env.'http://api.hotelquickly.com'
+	// },
 };
 
 // Need to configure a central statsd server for node apps, if statsd / graphite
