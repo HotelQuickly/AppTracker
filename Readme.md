@@ -6,56 +6,58 @@ Node.js server using [Hapi framework](http://www.hapijs.com) to get callbacks fr
 
 ## Attributes sent
 
-AppTracker sends 4 attributes in POST which we are saving to MySQL database:
+AppTracker sends 4 (possibly 5) attributes in POST which we are saving to MySQL database:
 * device_code
-* event_name
+* event_name / optionally event_list
 * screen_name
 * tmp_secret_key
 * app_secret_key
 
-## Instalation
-
-Install ```hapi``` and the other dependencies (as listed in ```package.json```) from ```npm``` with command
-
-```shell
-npm install
-```
-
-The callbacks will be available with POST request on URL ```/callback```
-
-Launch the application (```node .```) and run cURL with POST data:
-```
-curl -X POST http://localhost:8000/callback -d "email=test@example.com&timestamp=1390078739&event=open&smtp-id=32131231&category=all"
-
-curl -X POST http://localhost:4023/callback -d "email=test@example.com&timestamp=1390078739&event_list=%5B%7B%22screen_name%22%3A%22Get%20settings%22%2C%22event_name%22%3A%22show.screen.splash.screen%22%2C%22id%22%3A36%2C%22hotel_id%22%3A-1%2C%22city_id%22%3A-1%2C%22timestamp%22%3A1425010784%7D%5D&smtp-id=32131231&category=all"
-```
-
-## Healthy check
-
-Since we are running this server on Amazon EC2 under a load balancer, it requires a healthy check to be set up. Our healthy check will connect to database and select last inserted row to see if the database connection can be established.
-
-For this healthy check to work, you need to:
-
-1. check table name in ```config.js``` - it should match the table name you are using to save the callbacks
-2. set up healthy check in Amazon AWS load balancer. It is be available with GET request on URL ```/healthy-check```
-
-![Healthy Check setup](./docs/img/aws-healthy-check-setup.png)
 
 ## Config
 
-Don't forget to create ```config.js``` file before you launch the application. You have two options:
+Config is done via the environment as per the [12factor](http://12factor.net/logs) application philosophy. Currently there is one static config file, until some other things that used to happen in config are worked out.
 
-1. copy ```config.template.js``` to ```config.js``` and update parameters
-2. create a symlink to another directory with other config files, i.e. ```ln -s /srv/SecretConfig/production/config/config.AppTracker.js ./config.js```
+So in a [paas](http://en.wikipedia.org/wiki/Platform_as_a_service) environment such as hosted one [heroku](http://www.heroku.com) or a roll your own [deis](http://deis.io/) you have configuration options placed into the server's env.
+
+With heroku as this project demonstrates, this is handled by:
+
+```
+heroku config:set SOME_ENV_VAR=somevalue
+```
+
+Now that would get annoying real quick if it wasn't for [foreman + heroku-config](https://devcenter.heroku.com/articles/config-vars#using-foreman-and-heroku-config) Go ahead and read the whole article, I'll wait......
+
+Ok, so hopefully you read that, and installed the plugin to your heroku toolbelt (and read the documentation...did you???? I will wait....). You'll notice right now this repo has files in the .gitignore
+
+```
+.env
+.localenv
+```
+
+So now when you start your dev work on this project, you can do ```heroku config:pull```
+And then magically your .env file will be populated. copy that to ````.localenv ``` and edit the copy to suit your needs.
+
+## Installation
+
+Install ```hapi``` and the other dependencies (as listed in ```package.json```) from ```npm``` with command ```npm i```
+
+The callbacks will be available with POST request on URL ```/callback```
+
+Be sure you have installed [foreman](https://github.com/ddollar/foreman) and that you have nodemon installed ```which nodemon``` if that doesn't return a legit result, go ahead and run ```npm i nodemon --global``` that will install nodemon.
+
+Now, with that done launch the application (```foreman run nodemon . -e .localenv```) and run cURL with POST data:
+
+```curl -X POST http://localhost:8000/callback -d "email=test@example.com&timestamp=1390078739&event=open&smtp-id=32131231&category=all"```
+
+or to test event_list:
+
+```curl -X POST http://localhost:4023/callback -d "email=test@example.com&timestamp=1390078739&event_list=%5B%7B%22screen_name%22%3A%22Get%20settings%22%2C%22event_name%22%3A%22show.screen.splash.screen%22%2C%22id%22%3A36%2C%22hotel_id%22%3A-1%2C%22city_id%22%3A-1%2C%22timestamp%22%3A1425010784%7D%5D&smtp-id=32131231&category=all"```
+
 
 ## Run it on a server
 
-We recommend running it on a server with ```forever``` which is a great tool making sure it will run continuously, literaly, forever :-) See more info [about forever](https://github.com/nodejitsu/forever) in the documentation.
-
-This is what we use to run it on our server:
-```shell
-forever start --minUptime 1000 --spinSleepTime 5000 /srv/nodejs/AppTracker/index.js
-```
+Well this is the strange part: please read the upcoming [heroku and you](http://confluence.hotelquickly.com/display/LC/Heroku+and+You) document on confluence. About getting started and deploying to multiple environments.
 
 ## The MIT License (MIT)
 
