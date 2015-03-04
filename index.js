@@ -36,11 +36,32 @@ healthyCheck = new HealthyCheck(healthyParams);
 
 // Set handler params
 synchronizeParams = {
-	seneca: seneca,
-	limit: config.synchronize.maxItems
+	seneca: seneca
 };
 synchronize = new Synchronize(synchronizeParams);
+// Add the routes and their handlers
 
+// we need this route for legacy reasons, it's the same as POST /callback
+server.route({
+    method: 'POST',
+    path: '/',
+    handler: callback.handlerSaveCallback
+});
+server.route({
+    method: 'POST',
+    path: '/callback',
+    handler: callback.handlerSaveCallback
+});
+server.route({
+	method: 'GET',
+	path: '/healthy-check',
+	handler: healthyCheck.handlerHealthyCheck
+});
+server.route({
+	method: 'GET',
+	path: '/sync',
+	handler: synchronize.handlerSync
+});
 
 // Start server
 seneca.ready( function(){
