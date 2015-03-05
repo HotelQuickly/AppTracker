@@ -4,7 +4,7 @@
 var hapiModule = require('hapi');
 var requestModule = require('request');
 var validatorModule = require('validator');
-var seneca = require('seneca')();
+var seneca = require('seneca')({ log: 'silent' });
 // var senecaMySQL = require('seneca-mysql-store');
 var senecaDynamoDB = require('seneca-dynamo-store');
 
@@ -19,7 +19,6 @@ seneca.use(senecaDynamoDB, config.database.dynamodb);
 
 // Create a server with a host and port
 var server = new hapiModule.Server();
-server.connection({ host: '0.0.0.0', port: process.env.PORT || 3000 });
 
 // Set handler params
 handlerParams = {
@@ -65,7 +64,12 @@ server.route({
 
 // Start server
 seneca.ready( function(){
-	server.start(function () {
-		console.log('Server started at: ' + server.info.uri);
-	});
+	if (!module.parent) {
+		server.connection({ host: '0.0.0.0', port: process.env.PORT || 3000 });
+		server.start(function () {
+			console.log('Server started at: ' + server.info.uri);
+		});
+	}
+	
 });
+module.exports = server;
